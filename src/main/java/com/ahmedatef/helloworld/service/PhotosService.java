@@ -2,8 +2,8 @@ package com.ahmedatef.helloworld.service;
 
 import com.ahmedatef.helloworld.model.Photo;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,15 +19,18 @@ public class PhotosService {
         return db.values();
     }
 
-    public Photo getPhoto(String id) {
+    public ResponseEntity<?> getPhoto(String id) {
         Photo photo = db.get(id);
-        if (photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't find a photo with the id " + id);
-        return photo;
+        if (photo == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couldn't find a photo with the id " + id);
+        return ResponseEntity.ok(photo);
     }
 
-    public void deletePhoto(String id) {
+    public ResponseEntity<?> deletePhoto(String id) {
         Photo photo = db.remove(id);
-        if (photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Couldn't find a photo with the id" + id);
+        if (photo == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couldn't find a photo with the id" + id);
+        return ResponseEntity.ok(db.values());
     }
 
     public void addPhoto(Photo photo) {

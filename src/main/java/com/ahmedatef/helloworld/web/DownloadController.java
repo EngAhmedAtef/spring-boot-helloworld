@@ -17,8 +17,11 @@ public class DownloadController {
     }
 
     @GetMapping("/photos/download/{id}")
-    public ResponseEntity<byte[]> downloadPhoto(@PathVariable String id) {
-        Photo photo = photosService.getPhoto(id);
+    public ResponseEntity<?> downloadPhoto(@PathVariable String id) {
+        ResponseEntity<?> photoResponse = photosService.getPhoto(id);
+        if(photoResponse.getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couldn't find a photo with the id " + id);
+        Photo photo = (Photo) photoResponse.getBody();
         byte[] data = photo.getData();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(photo.getContentType()));

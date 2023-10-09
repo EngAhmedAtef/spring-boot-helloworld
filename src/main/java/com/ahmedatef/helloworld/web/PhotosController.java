@@ -2,6 +2,8 @@ package com.ahmedatef.helloworld.web;
 
 import com.ahmedatef.helloworld.model.Photo;
 import com.ahmedatef.helloworld.service.PhotosService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,37 +16,28 @@ public class PhotosController {
 
     private final PhotosService photosService;
 
-    public PhotosController(PhotosService photosService) {
-        this.photosService = photosService;
-    }
+    public PhotosController(PhotosService photosService) { this.photosService = photosService; }
 
     @GetMapping("/photos")
-    public Collection<Photo> getPhotos() {
-        return photosService.getPhotos();
-    }
+    public Collection<Photo> getPhotos() { return photosService.getPhotos(); }
 
     @GetMapping("/photos/{id}")
-    public Photo getPhoto(@PathVariable String id) {
-        return photosService.getPhoto(id);
-    }
+    public ResponseEntity<?> getPhoto(@PathVariable String id) { return photosService.getPhoto(id); }
 
     @DeleteMapping("/photos/{id}")
-    public Collection<Photo> deletePhoto(@PathVariable String id) {
-        photosService.deletePhoto(id);
-        return photosService.getPhotos();
-    }
+    public ResponseEntity<?> deletePhoto(@PathVariable String id) { return photosService.deletePhoto(id); }
 
 //    @PostMapping("/photos")
-//    public Photo addPhoto(@RequestBody @Valid Photo photo) {
+//    public Collection<Photo> addPhoto(@RequestBody @Valid Photo photo) {
 //        photosService.addPhoto(photo);
-//        return photo;
+//        return photosService.getPhotos();
 //    }
 
     @PostMapping("/photos")
-    public Photo addPhoto(@RequestPart("data") MultipartFile file) throws IOException {
+    public Collection<Photo> addPhoto(@RequestPart("data") MultipartFile file) throws IOException {
         Photo photo = new Photo(UUID.randomUUID().toString(), file.getOriginalFilename(), file.getBytes(), file.getContentType());
         photosService.addPhoto(photo);
-        return photo;
+        return photosService.getPhotos();
     }
 
 }
