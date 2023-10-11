@@ -10,7 +10,8 @@ import org.springframework.util.StringUtils;
 @Component
 public class MethodExecutionTimeLoggerAspect {
 
-    @Around(value = "execution(* com.ahmedatef.helloworld.service.*.*(..))")
+//    @Around(value = "execution(* com.ahmedatef.helloworld.service.*.*(..))")
+    @Around(value = "@annotation(com.ahmedatef.helloworld.annotations.LogExecutionTime)")
     public Object logMethodExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         StringBuilder stringBuilder = new StringBuilder("AROUND ADVICE:");

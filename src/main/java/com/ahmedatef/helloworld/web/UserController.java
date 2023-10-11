@@ -21,9 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<?> getUser(@PathVariable String id) {
-        return userService.getUser(id);
-    }
+    public User getUser(@PathVariable String id) { return userService.getUser(id); }
 
     @PostMapping("/users")
     public ResponseEntity<Collection<User>> addUser(@RequestBody @Valid User user) {
@@ -31,7 +29,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody @Valid User user) {
+    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody User user) {
         user.setId(id);
         return userService.updateUser(user);
     }

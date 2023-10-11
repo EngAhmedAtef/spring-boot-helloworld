@@ -1,5 +1,7 @@
 package com.ahmedatef.helloworld.service;
 
+import com.ahmedatef.helloworld.annotations.LogExecutionTime;
+import com.ahmedatef.helloworld.exception.UserNotFoundException;
 import com.ahmedatef.helloworld.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,11 @@ public class UserService {
 
     public Collection<User> getUsers() { return db.values(); }
 
-    public ResponseEntity<?> getUser(String id) {
+    @LogExecutionTime
+    public User getUser(String id) {
         User user = db.get(id);
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couldn't find a user with id " + id);
-        return ResponseEntity.ok(user);
+        if (user == null) throw new UserNotFoundException("Couldn't find a user with id " + id);
+        return user;
     }
 
     public ResponseEntity<Collection<User>> addUser(User user) {

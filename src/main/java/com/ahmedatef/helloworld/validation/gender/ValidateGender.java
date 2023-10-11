@@ -10,7 +10,6 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = GenderValidator.class)
 public @interface ValidateGender {
-
     String message() default "Gender can either be M or F.";
 
     // Validation groups are a way to group related constraints and apply them selectively during validation.
